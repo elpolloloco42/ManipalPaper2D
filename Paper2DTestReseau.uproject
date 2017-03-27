@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "4.15",
+	"Category": "",
+	"Description": "",
+	"Plugins": [
+		{
+			"Name": "OnlineSubsystemSteam",
+			"Enabled": true
+		},
+		{
+			"Name": "OnlineFramework",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "Paper2DTestReseau",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
