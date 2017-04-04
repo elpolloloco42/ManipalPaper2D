@@ -3,6 +3,16 @@
 	"EngineAssociation": "4.15",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "Paper2DTestReseau",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
 	"Plugins": [
 		{
 			"Name": "OnlineSubsystemSteam",
@@ -11,13 +21,6 @@
 		{
 			"Name": "OnlineFramework",
 			"Enabled": true
-		}
-	],
-	"Modules": [
-		{
-			"Name": "Paper2DTestReseau",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
 		}
 	]
 }
