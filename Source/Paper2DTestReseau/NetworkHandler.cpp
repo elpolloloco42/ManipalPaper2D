@@ -82,7 +82,11 @@ void	ANetworkHandler::ExtractMessage(FString message, int size)
 
 FString	ANetworkHandler::GetLastMessage()
 {
-	return this->_lastMessage;
+	FString	message;
+
+	message = this->_lastMessage;
+	this->_lastMessage = "";
+	return message;
 }
 
 void	ANetworkHandler::StartThread()
