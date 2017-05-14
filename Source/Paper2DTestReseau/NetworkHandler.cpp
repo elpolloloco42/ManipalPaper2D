@@ -57,8 +57,8 @@ bool	ANetworkHandler::GetResponse()
 	while (this->_socket->HasPendingData(size) == false)
 		true;
 	this->_socket->Recv(data, size, read);
+	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Received : ") + FString::FromInt(read));
 	message = UTF8_TO_TCHAR(data);
-	message[size] = NULL;
 	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("message : ") + message);
 	//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("size : ") + FString::FromInt(size));
 	if (size > 3)
