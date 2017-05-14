@@ -50,6 +50,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Network")
 		virtual void	Send104(FString lobbyName);
 	UFUNCTION(BlueprintCallable, Category = "Network")
+		virtual void	Send111(FString ready);
+	UFUNCTION(BlueprintCallable, Category = "Network")
+		virtual void	Send112();
+	UFUNCTION(BlueprintCallable, Category = "Network")
+		virtual void	Send113(FString message);
+	UFUNCTION(BlueprintCallable, Category = "Network")
 		virtual FString	GetLastMessage();
+	UFUNCTION(BlueprintCallable, Category = "Network")
+		virtual FString	GetLobbyLastMessage();
+	UFUNCTION(BlueprintCallable, Category = "Network")
+		virtual void	StartThread();
 
 };

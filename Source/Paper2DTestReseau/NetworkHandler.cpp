@@ -57,8 +57,8 @@ bool	ANetworkHandler::GetResponse()
 	while (this->_socket->HasPendingData(size) == false)
 		true;
 	this->_socket->Recv(data, size, read);
-	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Received : ") + FString::FromInt(read));
 	message = UTF8_TO_TCHAR(data);
+	//message[read] = NULL;
 	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("message : ") + message);
 	//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("size : ") + FString::FromInt(size));
 	if (size > 3)
@@ -83,7 +83,16 @@ void	ANetworkHandler::ExtractMessage(FString message, int size)
 FString	ANetworkHandler::GetLastMessage()
 {
 	return this->_lastMessage;
-	//	return this->_serverListener->GetLastMessage();
+}
+
+void	ANetworkHandler::StartThread()
+{
+	this->_serverListener = FServerListener::StartThread(this->_socket);
+}
+
+FString	ANetworkHandler::GetLobbyLastMessage()
+{
+	return this->_serverListener->GetLastMessage();
 }
 
 void	ANetworkHandler::Send101(FString nickName)
@@ -117,6 +126,33 @@ void	ANetworkHandler::Send103(FString lobbyName)
 void	ANetworkHandler::Send104(FString lobbyName)
 {
 	FString serialized = TEXT("103 ") + lobbyName;
+	TCHAR *serializedChar = serialized.GetCharArray().GetData();
+	int32 size = FCString::Strlen(serializedChar) + 1;
+	int32 sent = 0;
+	this->_socket->Send((uint8*)TCHAR_TO_UTF8(serializedChar), size, sent);
+}
+
+void	ANetworkHandler::Send111(FString ready)
+{
+	FString serialized = TEXT("111 ") + ready;
+	TCHAR *serializedChar = serialized.GetCharArray().GetData();
+	int32 size = FCString::Strlen(serializedChar) + 1;
+	int32 sent = 0;
+	this->_socket->Send((uint8*)TCHAR_TO_UTF8(serializedChar), size, sent);
+}
+
+void	ANetworkHandler::Send112()
+{
+	FString serialized = TEXT("112");
+	TCHAR *serializedChar = serialized.GetCharArray().GetData();
+	int32 size = FCString::Strlen(serializedChar) + 1;
+	int32 sent = 0;
+	this->_socket->Send((uint8*)TCHAR_TO_UTF8(serializedChar), size, sent);
+}
+
+void	ANetworkHandler::Send113(FString message)
+{
+	FString serialized = TEXT("113 ") + message;
 	TCHAR *serializedChar = serialized.GetCharArray().GetData();
 	int32 size = FCString::Strlen(serializedChar) + 1;
 	int32 sent = 0;
