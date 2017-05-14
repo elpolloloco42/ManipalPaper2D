@@ -125,7 +125,7 @@ void	ANetworkHandler::Send103(FString lobbyName)
 
 void	ANetworkHandler::Send104(FString lobbyName)
 {
-	FString serialized = TEXT("103 ") + lobbyName;
+	FString serialized = TEXT("104 ") + lobbyName;
 	TCHAR *serializedChar = serialized.GetCharArray().GetData();
 	int32 size = FCString::Strlen(serializedChar) + 1;
 	int32 sent = 0;
