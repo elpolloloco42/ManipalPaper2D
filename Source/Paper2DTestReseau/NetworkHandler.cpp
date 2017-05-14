@@ -92,7 +92,10 @@ void	ANetworkHandler::StartThread()
 
 FString	ANetworkHandler::GetLobbyLastMessage()
 {
-	return this->_serverListener->GetLastMessage();
+	if (this->_serverListener != NULL) {
+		return this->_serverListener->GetLastMessage();
+	}
+	return TEXT("");
 }
 
 void	ANetworkHandler::Send101(FString nickName)
