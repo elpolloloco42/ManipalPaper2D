@@ -31,6 +31,8 @@ public:
 	// End FRunnable interface
 
 	virtual FString GetLastMessage();
+	virtual void ReceiveData(uint32 size);
+
 
 	virtual void Finish();
 

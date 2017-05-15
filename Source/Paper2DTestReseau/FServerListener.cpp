@@ -32,34 +32,37 @@ bool FServerListener::Init()
 
 uint32		FServerListener::Run()
 {
-	uint8	*data = (uint8*)TCHAR_TO_UTF8("");
-	uint32	size = 0;
-	int32	read = 0;
-	FString	message;
+	uint32	size;
 
 	FPlatformProcess::Sleep(1);
 	while (!this->_finished)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 0.4f, FColor::Yellow, TEXT("Trying to receive..."));
-		while (this->_socket->HasPendingData(size) == true) {
-			/*GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("SOMETHING TO READ"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::FromInt(size) + TEXT("bytes to get"));*/
-			this->_socket->Recv(data, size, read);
-			message = UTF8_TO_TCHAR(data);
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Received"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::FromInt(read) + TEXT(" bytes"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Received : " + message);
-			this->_lastMessage = message;
-			this->_messagePool.Push(message);
-			//else
-			//	GEngine->AddOnScreenDebugMessage(-1, 0.5f, FColor::Yellow, TEXT("Nothing to read on the server"));
+		size = 0;
+		if (this->_socket->HasPendingData(size) == true) {
+			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("RECEIVEDATA WITH SIZE = ") + FString::FromInt(size));
+			this->ReceiveData(size);
 		}
 		FPlatformProcess::Sleep(0.5);
 	}
 		return (0);
 }
 
-FString		FServerListener::GetLastMessage()
+void		FServerListener::ReceiveData(uint32 size)
+{
+	uint8	data[100000];
+	int32	bytes_read;
+	FString	message;
+
+	this->_socket->Recv(data, size, bytes_read);
+	data[bytes_read] = 0;
+	message = UTF8_TO_TCHAR(data);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, FString::FromInt(bytes_read) + TEXT(" bytes"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green, "Received : " + message);
+	this->_lastMessage = message;
+	this->_messagePool.Push(message);
+}
+
+FString		FServerListener::GetLastMessage() 
 {
 	if (this->_messagePool.Num() == 0)
 		return FString("");

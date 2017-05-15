@@ -39,28 +39,25 @@ bool	ANetworkHandler::InitConnection(FString nickname, FString address, FString 
 	addr->SetPort(FCString::Atoi(*port));
 	if (addr->IsValid() == false)
 		return false;
-	//GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Yellow, TEXT("Trying to connect to '") + ip.ToString() + "'...");
 	bool connected = this->_socket->Connect(*addr);
 	if (!connected)
 		return false;
-	//this->_serverListener = FServerListener::StartThread(this->_socket);
 	return true;
 }
 
 bool	ANetworkHandler::GetResponse()
 {
-	uint8	*data = (uint8*)TCHAR_TO_UTF8("");
+	uint8	data[100000];
+	int32	bytes_read;
 	uint32	size = 0;
-	int32	read = 0;
 	FString	message;
 
 	while (this->_socket->HasPendingData(size) == false)
 		true;
-	this->_socket->Recv(data, size, read);
+	this->_socket->Recv(data, size, bytes_read);
+	data[bytes_read] = 0;
 	message = UTF8_TO_TCHAR(data);
-	//message[read] = NULL;
-	GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("message : ") + message);
-	//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("size : ") + FString::FromInt(size));
+	//GEngine->AddOnScreenDebugMessage(-1, 10.0f, FColor::Green, TEXT("message : ") + message);
 	if (size > 3)
 		this->ExtractMessage(message, size);
 	if (message.Contains("201") == true)
