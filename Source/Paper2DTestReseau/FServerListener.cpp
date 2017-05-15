@@ -42,7 +42,7 @@ uint32		FServerListener::Run()
 			//GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Orange, TEXT("RECEIVEDATA WITH SIZE = ") + FString::FromInt(size));
 			this->ReceiveData(size);
 		}
-		FPlatformProcess::Sleep(0.5);
+		FPlatformProcess::Sleep(0.2);
 	}
 		return (0);
 }
